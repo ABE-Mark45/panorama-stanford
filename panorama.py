@@ -374,7 +374,7 @@ def stitch_multiple_images(imgs, desc_func=simple_descriptor, patch_size=5):
     for i in range(len(imgs)-1):
         H = ransac(keypoints[i], keypoints[i+1], matches[i])[0]
         transforms.append(H)
-    
+    '''    
     mid_index = len(imgs)//2
 
     new_transforms_left = []
@@ -382,9 +382,9 @@ def stitch_multiple_images(imgs, desc_func=simple_descriptor, patch_size=5):
         new_transforms_left.append(np.linalg.inv(transforms[i]))
     for i in range(1, len(new_transforms_left)):
         new_transforms_left[i] = new_transforms_left[i-1]@new_transforms_left[i]
+    '''
 
 
-'''
     for i in range(1, len(transforms)):
         transforms[i] = transforms[i-1] @ transforms[i]
     output_shape, offset = get_output_space(imgs[0], imgs[1:], transforms)
@@ -400,7 +400,7 @@ def stitch_multiple_images(imgs, desc_func=simple_descriptor, patch_size=5):
         img2_warped[~img2_mask] = 0
 
         panorama = linear_blend(panorama, img2_warped)
-    '''
+
     panorama[panorama>1]=1
     panorama[panorama<0]=0
     ### END YOUR CODE
